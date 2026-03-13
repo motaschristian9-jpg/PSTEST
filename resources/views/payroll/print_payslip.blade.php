@@ -45,28 +45,28 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #f3f4f6;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
         }
         .ps-brand {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #111827;
             letter-spacing: -0.01em;
         }
         .ps-title {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #6b7280;
             font-weight: 600;
         }
         .ps-period {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
             color: #4f46e5;
             background: #e0e7ff;
-            padding: 2px 8px;
+            padding: 1px 6px;
             border-radius: 999px;
         }
 
@@ -74,23 +74,23 @@
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         .info-item {
             display: flex;
             flex-direction: column;
         }
         .info-label {
-            font-size: 9px;
+            font-size: 8px;
             text-transform: uppercase;
             color: #6b7280;
             font-weight: 700;
             letter-spacing: 0.05em;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .info-val {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #111827;
         }
@@ -99,21 +99,21 @@
         .breakdown-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
         .breakdown-col {
             display: flex;
             flex-direction: column;
         }
         .b-title {
-            font-size: 9px;
+            font-size: 8px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 4px;
+            padding-bottom: 3px;
         }
         .b-title.earnings { color: #166534; border-color: #dcfce3; }
         .b-title.deductions { color: #991b1b; border-color: #fee2e2; }
@@ -122,8 +122,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
-            font-size: 10px;
+            padding: 3px 0;
+            font-size: 9px;
             border-bottom: 1px dashed #f3f4f6;
         }
         .line-item:last-child {
@@ -136,10 +136,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 6px;
+            padding-top: 4px;
             margin-top: auto;
             border-top: 1px solid #e5e7eb;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
         }
 
@@ -250,8 +250,16 @@
                             <div class="b-title deductions">Deductions</div>
                             
                             <div class="line-item">
-                                <span class="l-label">SSS / PH / HDMF</span>
-                                <span class="l-amount">{{ number_format(($p['employee']->sss_amount ?? 0) + ($p['employee']->philhealth_amount ?? 0) + ($p['employee']->hdmf_amount ?? 0), 2) }}</span>
+                                <span class="l-label">SSS</span>
+                                <span class="l-amount">{{ number_format($p['employee']->sss_amount ?? 0, 2) }}</span>
+                            </div>
+                            <div class="line-item">
+                                <span class="l-label">PhilHealth</span>
+                                <span class="l-amount">{{ number_format($p['employee']->philhealth_amount ?? 0, 2) }}</span>
+                            </div>
+                            <div class="line-item">
+                                <span class="l-label">HDMF (Pag-ibig)</span>
+                                <span class="l-amount">{{ number_format($p['employee']->hdmf_amount ?? 0, 2) }}</span>
                             </div>
                             <div class="line-item">
                                 <span class="l-label">Others</span>
