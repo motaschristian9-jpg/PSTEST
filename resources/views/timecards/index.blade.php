@@ -39,7 +39,7 @@
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 text-sm">
+                <tbody id="timecardTableBody" class="divide-y divide-gray-100 text-sm">
                     @forelse($timecards as $tc)
                     <tr class="hover:bg-slate-50/50 transition duration-150">
                         <!-- Date -->

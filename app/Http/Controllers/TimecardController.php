@@ -38,12 +38,13 @@ class TimecardController extends Controller
             $request->break_hours
         );
 
-        Timecard::create(array_merge($request->all(), $calc));
+        $timecard = Timecard::create(array_merge($request->all(), $calc));
  
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Timecard recorded successfully!'
+                'message' => 'Timecard recorded successfully!',
+                'data' => $timecard->load('employee')
             ]);
         }
  
