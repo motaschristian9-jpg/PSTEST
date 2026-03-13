@@ -1,9 +1,10 @@
-<!-- Sidebar -->
-<aside class="w-64 bg-[#1e1b4b] text-white shrink-0 h-screen flex flex-col border-r border-[#2e2b5e]">
+<!-- Sidebar Overlay (Mobile Only) -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity duration-300 opacity-0" onclick="toggleSidebar()"></div>
+
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-[#1e1b4b] text-white flex flex-col border-r border-[#2e2b5e] transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out shrink-0 h-screen">
     
     <!-- Logo Area -->
-    <div class="h-20 flex items-center px-6 border-b border-indigo-900/50 bg-[#1e1b4b]">
-        <!-- Removed raw text, using the logo if it exists, else stylish text -->
+    <div class="h-20 flex items-center justify-between px-6 border-b border-indigo-900/50 bg-[#1e1b4b] shrink-0">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
             <img class="h-11 w-auto object-contain" src="{{ asset('images/Picture1.png') }}" alt="Logo">
             <div class="flex flex-col leading-tight">
@@ -11,6 +12,10 @@
                 <span class="text-[10px] text-indigo-300 font-medium uppercase tracking-[0.15em]">Services</span>
             </div>
         </a>
+        <!-- Mobile Close Button -->
+        <button onclick="toggleSidebar()" class="lg:hidden text-indigo-300 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
     </div>
 
     @auth

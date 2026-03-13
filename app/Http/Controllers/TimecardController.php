@@ -39,7 +39,14 @@ class TimecardController extends Controller
         );
 
         Timecard::create(array_merge($request->all(), $calc));
-
+ 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Timecard recorded successfully!'
+            ]);
+        }
+ 
         return redirect()->route('timecards.index')->with('success', 'Timecard recorded successfully!');
     }
 

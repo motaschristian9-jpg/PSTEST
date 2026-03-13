@@ -10,9 +10,9 @@
             </button>
         </div>
 
-        <form action="{{ route('timecards.store') }}" method="POST">
+        <form id="addTimecardForm" action="{{ route('timecards.store') }}" method="POST">
             @csrf
-
+ 
             <div class="p-6 space-y-5">
                 <!-- Searchable Employee Input -->
                 <div class="relative">
@@ -26,12 +26,12 @@
                     <input type="hidden" name="employee_id" id="employeeId">
                     <ul id="employeeList" class="border border-gray-200 mt-1 rounded-xl bg-white shadow-lg max-h-40 overflow-y-auto hidden absolute z-50 w-full divide-y divide-gray-100 text-sm"></ul>
                 </div>
-
+ 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
                     <input type="date" name="date" class="w-full border border-gray-200 bg-gray-50 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all shadow-sm cursor-pointer" value="{{ date('Y-m-d') }}" required>
                 </div>
-
+ 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Day Type</label>
                     <select name="day_type" class="w-full border border-gray-200 bg-gray-50 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all appearance-none cursor-pointer shadow-sm" required>
@@ -42,7 +42,7 @@
                         <option value="Rest Day">Rest Day</option>
                     </select>
                 </div>
-
+ 
                 <div class="grid grid-cols-2 gap-4 border-t border-b border-gray-100 py-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Time In</label>
@@ -53,7 +53,7 @@
                         <input type="time" name="time_out" class="w-full border border-gray-200 bg-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm cursor-pointer">
                     </div>
                 </div>
-
+ 
                 <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/50">
                     <label class="block text-sm font-medium text-indigo-900 mb-1">Break Hours</label>
                     <div class="relative">
@@ -64,41 +64,75 @@
                     </div>
                 </div>
             </div>
-
+ 
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-3 rounded-b-2xl sticky bottom-0 z-10">
                 <button type="button" class="px-5 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" onclick="closeModal('addTimecardModal')">Cancel</button>
                 <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-500/30 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">Save Timecard</button>
             </div>
         </form>
     </div>
-
+ 
     <!-- JavaScript for Searchable Employee -->
     <script>
         const employees = @json($employees); // Laravel passes the employees array
         const searchInput = document.getElementById('employeeSearch');
         const employeeIdInput = document.getElementById('employeeId');
         const list = document.getElementById('employeeList');
-
+        const addTimecardForm = document.getElementById('addTimecardForm');
+ 
+        // Handle Form Submission via AJAX
+        addTimecardForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async response => {
+                const data = await response.json();
+                if (response.ok) {
+                    showToast(data.message, "success");
+                    // Clear only employee related fields to allow adding more entries for same date/type
+                    searchInput.value = '';
+                    employeeIdInput.value = '';
+                    searchInput.focus();
+                } else {
+                    const errorMsg = data.message || "Failed to save timecard.";
+                    showToast(errorMsg, "error");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast("An unexpected error occurred.", "error");
+            });
+        });
+ 
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase();
             list.innerHTML = '';
-
+ 
             if(query.length === 0) {
                 list.classList.add('hidden');
                 employeeIdInput.value = '';
                 return;
             }
-
+ 
             const matches = employees.filter(emp => 
                 emp.full_name.toLowerCase().includes(query) || emp.id.toString().includes(query)
             );
-
+ 
             if(matches.length === 0){
                 list.classList.add('hidden');
                 employeeIdInput.value = '';
                 return;
             }
-
+ 
             matches.forEach(emp => {
                 const li = document.createElement('li');
                 li.classList.add('px-4','py-3','hover:bg-slate-50','cursor-pointer', 'text-gray-700', 'font-medium');
@@ -110,10 +144,10 @@
                 });
                 list.appendChild(li);
             });
-
+ 
             list.classList.remove('hidden');
         });
-
+ 
         document.addEventListener('click', function(e) {
             if(!searchInput.contains(e.target) && !list.contains(e.target)){
                 list.classList.add('hidden');
