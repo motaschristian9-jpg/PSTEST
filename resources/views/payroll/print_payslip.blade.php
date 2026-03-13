@@ -45,28 +45,28 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #f3f4f6;
-            padding-bottom: 6px;
-            margin-bottom: 8px;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
         .ps-brand {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 700;
             color: #111827;
             letter-spacing: -0.01em;
         }
         .ps-title {
-            font-size: 9px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #6b7280;
             font-weight: 600;
         }
         .ps-period {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 600;
             color: #4f46e5;
             background: #e0e7ff;
-            padding: 1px 6px;
+            padding: 3px 10px;
             border-radius: 999px;
         }
 
@@ -74,23 +74,23 @@
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
         .info-item {
             display: flex;
             flex-direction: column;
         }
         .info-label {
-            font-size: 8px;
+            font-size: 10px;
             text-transform: uppercase;
             color: #6b7280;
             font-weight: 700;
             letter-spacing: 0.05em;
-            margin-bottom: 1px;
+            margin-bottom: 3px;
         }
         .info-val {
-            font-size: 10px;
+            font-size: 13px;
             font-weight: 600;
             color: #111827;
         }
@@ -99,21 +99,21 @@
         .breakdown-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 10px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
         .breakdown-col {
             display: flex;
             flex-direction: column;
         }
         .b-title {
-            font-size: 8px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 3px;
+            padding-bottom: 5px;
         }
         .b-title.earnings { color: #166534; border-color: #dcfce3; }
         .b-title.deductions { color: #991b1b; border-color: #fee2e2; }
@@ -122,8 +122,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 3px 0;
-            font-size: 9px;
+            padding: 6px 0;
+            font-size: 12px;
             border-bottom: 1px dashed #f3f4f6;
         }
         .line-item:last-child {
@@ -136,10 +136,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 4px;
+            padding-top: 8px;
             margin-top: auto;
             border-top: 1px solid #e5e7eb;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 700;
         }
 
@@ -147,19 +147,19 @@
         .grand-total-box {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .gt-label {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
             color: #1e293b;
         }
         .gt-val {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: 800;
             color: #059669; /* Emerald 600 */
         }
@@ -175,15 +175,17 @@
             }
             .payslip-grid {
                 gap: 5mm;
-                padding: 10mm;
-                height: 297mm; /* Full A4 height */
-                grid-template-rows: 1fr 1fr;
+                padding: 10mm 5mm;
+                height: auto;
+                grid-template-rows: auto auto;
             }
             .payslip-card {
                 border: 1px solid #d1d5db;
-                height: 135mm; /* Approx half A4 minus gaps */
+                height: auto;
+                padding: 20px;
                 display: flex;
                 flex-direction: column;
+                margin-bottom: 0;
             }
             /* Start a new page every 4 payslips (2x2 grid) */
             .payslip-grid:not(:first-child) {
