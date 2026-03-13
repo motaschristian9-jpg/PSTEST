@@ -1,10 +1,9 @@
 services:
   - type: web
     name: dcj-payroll
-    env: php
+    env: docker
     plan: free
-    buildCommand: ./build.sh
-    startCommand: apache2-foreground
+    healthCheckPath: /
     envVars:
       - key: APP_ENV
         value: production
@@ -14,8 +13,3 @@ services:
         value: stderr
       - key: DB_CONNECTION
         value: pgsql
-      - key: php_version
-        value: 8.2
-      - key: NODE_VERSION
-        value: 20
-    healthCheckPath: /
