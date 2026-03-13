@@ -4,7 +4,5 @@ vendor
 storage/*.key
 .env
 .phpunit.result.cache
-Dockerfile
-docker/
 render.yaml
 build.sh
