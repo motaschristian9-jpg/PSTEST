@@ -194,9 +194,12 @@
             <div class="payslip-card">
 
                 <div class="ps-header">
-                    <div>
-                        <div class="ps-brand">DCJ's Construction Services</div>
-                        <div class="ps-title">Employee Payslip</div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="{{ asset('images/Picture1.png') }}" alt="Logo" style="height: 48px; width: auto; object-contain;">
+                        <div>
+                            <div class="ps-brand">DCJ's Construction Services</div>
+                            <div class="ps-title">Employee Payslip</div>
+                        </div>
                     </div>
                     <div class="ps-period">
                         {{ \Carbon\Carbon::parse($start)->format('M d') }} - {{ \Carbon\Carbon::parse($end)->format('M d, Y') }}

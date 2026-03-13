@@ -180,9 +180,12 @@
                     <div class="payslip-card">
 
                         <div class="ps-header">
-                            <div>
-                                <div class="ps-brand">{{ $companyName ?? "DCJ's Construction Services" }}</div>
-                                <div class="ps-title">13th Month Report</div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="{{ asset('images/Picture1.png') }}" alt="Logo" style="height: 48px; width: auto; object-contain;">
+                                <div>
+                                    <div class="ps-brand">{{ $companyName ?? "DCJ's Construction Services" }}</div>
+                                    <div class="ps-title">13th Month Report</div>
+                                </div>
                             </div>
                             <div class="ps-period">
                                 Year {{ $p['year'] }}
