@@ -34,6 +34,10 @@ class EmployeeController extends Controller
             'philhealth_amount' => 'nullable|numeric|min:0',
             'other_deductions' => 'nullable|numeric|min:0',
             'pay_schedule' => 'required|in:Weekly,15/30,10/25',
+            'allowance' => 'nullable|numeric|min:0',
+            'accommodation' => 'nullable|numeric|min:0',
+            'load_allowance' => 'nullable|numeric|min:0',
+            'travel_allowance' => 'nullable|numeric|min:0',
         ]);
 
         Employee::create($request->all());
@@ -68,6 +72,10 @@ class EmployeeController extends Controller
             'philhealth_amount' => 'nullable|numeric|min:0',
             'other_deductions' => 'nullable|numeric|min:0',
             'pay_schedule' => 'required|in:Weekly,15/30,10/25',
+            'allowance' => 'nullable|numeric|min:0',
+            'accommodation' => 'nullable|numeric|min:0',
+            'load_allowance' => 'nullable|numeric|min:0',
+            'travel_allowance' => 'nullable|numeric|min:0',
         ]);
 
         $employee->update($request->all());

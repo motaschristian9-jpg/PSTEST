@@ -32,7 +32,7 @@
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             /* Prevent breaking inside */
             page-break-inside: avoid;
             position: relative;
@@ -45,8 +45,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #f3f4f6;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
         }
         .ps-brand {
             font-size: 16px;
@@ -74,8 +74,8 @@
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .info-item {
             display: flex;
@@ -99,21 +99,21 @@
         .breakdown-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 12px;
         }
         .breakdown-col {
             display: flex;
             flex-direction: column;
         }
         .b-title {
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
         .b-title.earnings { color: #166534; border-color: #dcfce3; }
         .b-title.deductions { color: #991b1b; border-color: #fee2e2; }
@@ -122,8 +122,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
-            font-size: 12px;
+            padding: 4px 0;
+            font-size: 11px;
             border-bottom: 1px dashed #f3f4f6;
         }
         .line-item:last-child {
@@ -136,10 +136,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 8px;
+            padding-top: 6px;
             margin-top: auto;
             border-top: 1px solid #e5e7eb;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
         }
 
@@ -148,7 +148,7 @@
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 12px 16px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -159,7 +159,7 @@
             color: #1e293b;
         }
         .gt-val {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 800;
             color: #059669; /* Emerald 600 */
         }
@@ -182,7 +182,7 @@
             .payslip-card {
                 border: 1px solid #d1d5db;
                 height: auto;
-                padding: 20px;
+                padding: 12px;
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 0;
@@ -233,12 +233,33 @@
                             <div class="b-title earnings">Earnings</div>
                             
                             <div class="line-item">
+                                <span class="l-label">Basic Pay</span>
+                                <span class="l-amount">{{ number_format($p['basic_pay'], 2) }}</span>
+                            </div>
+                            <div class="line-item">
                                 <span class="l-label">Overtime</span>
                                 <span class="l-amount">{{ number_format($p['ot_pay'], 2) }}</span>
                             </div>
                             <div class="line-item">
                                 <span class="l-label">ND Pay</span>
                                 <span class="l-amount">{{ number_format($p['night_diff_pay'] ?? 0, 2) }}</span>
+                            </div>
+
+                            <div class="line-item">
+                                <span class="l-label">Allowance</span>
+                                <span class="l-amount">{{ number_format($p['allowance'] ?? 0, 2) }}</span>
+                            </div>
+                            <div class="line-item">
+                                <span class="l-label">Accommodation</span>
+                                <span class="l-amount">{{ number_format($p['accommodation'] ?? 0, 2) }}</span>
+                            </div>
+                            <div class="line-item">
+                                <span class="l-label">Load Allowance</span>
+                                <span class="l-amount">{{ number_format($p['load_allowance'] ?? 0, 2) }}</span>
+                            </div>
+                            <div class="line-item">
+                                <span class="l-label">Travel Allowance</span>
+                                <span class="l-amount">{{ number_format($p['travel_allowance'] ?? 0, 2) }}</span>
                             </div>
                             
                             <div class="total-item" style="color:#166534">

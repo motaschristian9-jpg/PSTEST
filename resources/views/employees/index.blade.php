@@ -35,6 +35,7 @@
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Employee</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Type & Role</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Basic Rate</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider lg:table-cell hidden">Allowances</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider lg:table-cell hidden">Gov Deductions</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Other Deductions</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Actions</th>
@@ -63,6 +64,14 @@
                         <!-- Basic Rate -->
                         <td class="px-6 py-4 text-right font-medium text-gray-900">
                             ₱ {{ number_format($emp->basic_rate, 2) }}
+                        </td>
+
+                        <!-- Allowances (Condensed) -->
+                        <td class="px-6 py-4 lg:table-cell hidden text-gray-500 text-xs space-y-1">
+                            <div><span class="font-medium">Allow:</span> ₱ {{ number_format($emp->allowance ?? 0, 2) }}</div>
+                            <div><span class="font-medium">Accom:</span> ₱ {{ number_format($emp->accommodation ?? 0, 2) }}</div>
+                            <div><span class="font-medium">Load:</span> ₱ {{ number_format($emp->load_allowance ?? 0, 2) }}</div>
+                            <div><span class="font-medium">Travel:</span> ₱ {{ number_format($emp->travel_allowance ?? 0, 2) }}</div>
                         </td>
                         
                         <!-- Gov Deductions (Condensed) -->
@@ -150,6 +159,10 @@
                 document.getElementById('editPhilhealthAmount').value = data.philhealth_amount ?? 0;
                 document.getElementById('editOtherDeductions').value = data.other_deductions ?? 0;
                 document.getElementById('editPaySchedule').value = data.pay_schedule;
+                document.getElementById('editAllowance').value = data.allowance ?? 0;
+                document.getElementById('editAccommodation').value = data.accommodation ?? 0;
+                document.getElementById('editLoadAllowance').value = data.load_allowance ?? 0;
+                document.getElementById('editTravelAllowance').value = data.travel_allowance ?? 0;
 
                 document.getElementById('editEmployeeForm').action = `/employees/${id}`;
                 openModal('editEmployeeModal');

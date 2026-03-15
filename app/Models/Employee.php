@@ -22,6 +22,10 @@ class Employee extends Model
         'philhealth_amount',
         'other_deductions',
         'pay_schedule',
+        'allowance',
+        'accommodation',
+        'load_allowance',
+        'travel_allowance',
     ];
 
     // Relationships
@@ -52,7 +56,16 @@ class Employee extends Model
         $totalOTHours = $timecards->sum('ot_hours');
         $totalOT = $timecards->sum('ot_pay');
         $nightDiff = $timecards->sum('night_diff_pay');
-        $grossPay = $timecards->sum('overall_total');
+        $timecardGross = $timecards->sum('overall_total');
+        $basicPay = $timecardGross - $totalOT - $nightDiff;
+
+        $allowance = $this->allowance ?? 0;
+        $accommodation = $this->accommodation ?? 0;
+        $loadAllowance = $this->load_allowance ?? 0;
+        $travelAllowance = $this->travel_allowance ?? 0;
+        $totalAllowances = $allowance + $accommodation + $loadAllowance + $travelAllowance;
+
+        $grossPay = $timecardGross + $totalAllowances;
 
         $sss = $this->sss_amount ?? 0;
         $philhealth = $this->philhealth_amount ?? 0;
@@ -66,8 +79,13 @@ class Employee extends Model
             'employee' => $this,
             'total_hours' => $totalHours,
             'total_ot_hours' => $totalOTHours,
+            'basic_pay' => $basicPay,
             'ot_pay' => $totalOT,
             'night_diff_pay' => $nightDiff,
+            'allowance' => $allowance,
+            'accommodation' => $accommodation,
+            'load_allowance' => $loadAllowance,
+            'travel_allowance' => $travelAllowance,
             'gross_pay' => $grossPay,
             'total_deductions' => $totalDeductions,
             'net_pay' => $netPay,
