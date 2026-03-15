@@ -78,6 +78,7 @@
                         <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Basic Rate</th>
                         <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right text-amber-600">Total OT</th>
                         <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right text-indigo-600">Night Diff</th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right text-emerald-600">Allowances</th>
                         <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right bg-indigo-50/50">Gross Pay</th>
                         <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right text-rose-600">SSS</th>
                         <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-right text-rose-600">PhilHealth</th>
@@ -107,6 +108,13 @@
                             <td class="px-4 py-3 text-right font-medium text-gray-700">{{ number_format($p['employee']->basic_rate, 2) }}</td>
                             <td class="px-4 py-3 text-right font-medium text-amber-600">{{ number_format($p['ot_pay'], 2) }}</td>
                             <td class="px-4 py-3 text-right font-medium text-indigo-600">{{ number_format($p['night_diff_pay'], 2) }}</td>
+                            <!-- Allowances -->
+                            <td class="px-4 py-3 text-right text-xs text-gray-500 space-y-0.5">
+                                <div><span class="font-medium text-[10px]">Allow:</span> {{ number_format($p['allowance'] ?? 0, 2) }}</div>
+                                <div><span class="font-medium text-[10px]">Accom:</span> {{ number_format($p['accommodation'] ?? 0, 2) }}</div>
+                                <div><span class="font-medium text-[10px]">Load:</span> {{ number_format($p['load_allowance'] ?? 0, 2) }}</div>
+                                <div><span class="font-medium text-[10px]">Travel:</span> {{ number_format($p['travel_allowance'] ?? 0, 2) }}</div>
+                            </td>
                             <!-- Gross Pay -->
                             <td class="px-4 py-3 text-right font-bold text-gray-900 bg-indigo-50/30">{{ number_format($p['gross_pay'], 2) }}</td>
                             <!-- Deductions -->
