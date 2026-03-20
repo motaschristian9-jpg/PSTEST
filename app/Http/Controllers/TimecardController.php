@@ -82,6 +82,19 @@ class TimecardController extends Controller
         return redirect()->route('timecards.index')->with('success', 'Timecard updated successfully!');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'No timecards selected.');
+        }
+
+        Timecard::whereIn('id', $ids)->delete();
+
+        return redirect()->route('timecards.index')->with('success', 'Selected timecards deleted successfully.');
+    }
+
     public function destroy(Timecard $timecard)
     {
         $timecard->delete();

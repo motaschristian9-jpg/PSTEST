@@ -17,7 +17,7 @@ class EmployeeController extends Controller
         $employees = Employee::query()
             ->when($search, function ($query, $search) {
                 return $query->where('id', 'like', "%{$search}%")
-                             ->orWhere('full_name', 'like', "%{$search}%");
+                             ->orWhereRaw('LOWER(full_name) LIKE ?', ["%" . strtolower($search) . "%"]);
             })
             ->paginate(10);
 
@@ -94,6 +94,19 @@ class EmployeeController extends Controller
     /**
      * Remove the specified employee.
      */
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'No employees selected.');
+        }
+
+        Employee::whereIn('id', $ids)->delete();
+
+        return redirect()->route('employees.index')->with('success', 'Selected employees deleted successfully.');
+    }
+
     public function destroy(Employee $employee)
     {
         $employee->delete();

@@ -24,7 +24,10 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Resource routes
+    Route::post('employees/bulk-delete', [EmployeeController::class, 'bulkDelete'])->name('employees.bulkDelete');
     Route::resource('employees', EmployeeController::class);
+    
+    Route::post('timecards/bulk-delete', [TimecardController::class, 'bulkDelete'])->name('timecards.bulkDelete');
     Route::resource('timecards', TimecardController::class);
     Route::resource('payrolls', PayrollController::class);
     Route::resource('thirteenth_month', ThirteenthMonthController::class);
