@@ -10,7 +10,7 @@ class TimecardController extends Controller
 {
     public function index()
     {
-        $timecards = Timecard::with('employee')->get();
+        $timecards = Timecard::with('employee')->paginate(10);
         $employees = Employee::all();
         return view('timecards.index', compact('timecards', 'employees'));
     }

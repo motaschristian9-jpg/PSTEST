@@ -10,9 +10,17 @@ class EmployeeController extends Controller
     /**
      * Display a listing of employees.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::all();
+        $search = $request->input('search');
+        
+        $employees = Employee::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('id', 'like', "%{$search}%")
+                             ->orWhere('full_name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('employees.index', compact('employees'));
     }
 

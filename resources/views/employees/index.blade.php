@@ -4,13 +4,27 @@
 <div class="max-w-screen-2xl mx-auto">
 
     <!-- Header & Actions -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
             <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Employee Directory</h2>
             <p class="text-sm text-gray-500 mt-1">Manage your workforce, update details, and review compensation rates.</p>
         </div>
-        <div class="mt-4 md:mt-0">
-            <button onclick="openModal('addEmployeeModal')" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-5 rounded-lg shadow-sm shadow-indigo-500/30 transition-all focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+            <!-- Search Bar -->
+            <form action="{{ route('employees.index') }}" method="GET" class="relative w-full sm:w-72">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or ID..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                @if(request('search'))
+                    <a href="{{ route('employees.index') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </a>
+                @endif
+            </form>
+
+            <button onclick="openModal('addEmployeeModal')" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-5 rounded-lg shadow-sm shadow-indigo-500/30 transition-all focus:ring-2 focus:ring-indigo-500 focus:outline-none whitespace-nowrap">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                 Add Employee
             </button>
@@ -113,7 +127,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                        <td colspan="8" class="px-6 py-12 text-center text-gray-500">
                             <svg class="mx-auto h-12 w-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             <span class="block font-medium">No employees found.</span>
                             <span class="block text-sm mt-1">Start by adding a new employee to the system.</span>
@@ -123,6 +137,11 @@
                 </tbody>
             </table>
         </div>
+        
+        <!-- Pagination -->
+        @if($employees->hasPages())
+            {{ $employees->appends(['search' => request('search')])->links('vendor.pagination.custom') }}
+        @endif
     </div>
 
     <!-- Include Modals -->

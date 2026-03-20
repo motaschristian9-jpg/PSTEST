@@ -121,6 +121,13 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        @if($timecards->hasPages())
+            <div class="px-6 py-6 bg-gray-50/50 border-t border-gray-100">
+                {{ $timecards->links('vendor.pagination.custom') }}
+            </div>
+        @endif
     </div>
 
 <!-- Include Add/Edit Modals -->
