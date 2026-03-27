@@ -9,12 +9,35 @@
             <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Timecards & Attendance</h2>
             <p class="text-sm text-gray-500 mt-1">Review employee daily logs, night differentials, and calculate overtime.</p>
         </div>
-        <div class="flex flex-col sm:flex-row items-center gap-3">
-            <!-- Delete Selected Button -->
-            <button id="bulkDeleteBtn" onclick="confirmBulkDelete()" class="hidden inline-flex items-center justify-center gap-2 bg-rose-50 text-rose-600 hover:bg-rose-100 text-sm font-semibold py-2.5 px-5 rounded-lg border border-rose-100 transition-all focus:outline-none whitespace-nowrap">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                Delete Selected (<span id="selectedCount">0</span>)
-            </button>
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+            <!-- Search & Bulk Delete Group -->
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <!-- Search Bar -->
+                <form action="{{ route('timecards.index') }}" method="GET" class="flex items-center gap-2">
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name or ID..." 
+                            class="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-100 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        @if(request('search'))
+                            <a href="{{ route('timecards.index') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </a>
+                        @endif
+                    </div>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all focus:outline-none">
+                        Search
+                    </button>
+                </form>
+
+                <!-- Delete Selected Button -->
+                <button id="bulkDeleteBtn" onclick="confirmBulkDelete()" class="hidden items-center justify-center gap-2 bg-rose-50 text-rose-600 hover:bg-rose-100 text-sm font-semibold py-2.5 px-5 rounded-lg border border-rose-100 transition-all focus:outline-none whitespace-nowrap">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    Delete Selected (<span id="selectedCount">0</span>)
+                </button>
+            </div>
+
             <button onclick="openModal('addTimecardModal')" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-5 rounded-lg shadow-sm shadow-indigo-500/30 transition-all focus:ring-2 focus:ring-indigo-500 focus:outline-none whitespace-nowrap">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Log Attendance
@@ -22,12 +45,6 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="mb-6 bg-emerald-50 border border-emerald-100 text-emerald-800 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
-            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            {{ session('success') }}
-        </div>
-    @endif
 
     <!-- Data Table Card -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -88,9 +105,9 @@
                         
                         <!-- Pay & OT -->
                         <td class="px-6 py-4 text-right">
-                            <div class="text-emerald-600 font-black tabular-nums tracking-tighter">₱ {{ number_format($tc->total_pay, 2) }}</div>
-                            @if($tc->overtime_pay > 0)
-                                <div class="text-[10px] text-rose-500 font-black uppercase tracking-widest">+ OT ₱ {{ number_format($tc->overtime_pay, 2) }}</div>
+                            <div class="text-emerald-600 font-black tabular-nums tracking-tighter">₱ {{ number_format($tc->overall_total, 2) }}</div>
+                            @if($tc->ot_pay > 0)
+                                <div class="text-[10px] text-rose-500 font-black uppercase tracking-widest">+ OT ₱ {{ number_format($tc->ot_pay, 2) }}</div>
                             @endif
                         </td>
                         
@@ -100,10 +117,17 @@
                                 <button onclick="editTimecard({{ $tc->id }})" class="text-indigo-500 hover:text-indigo-800 transition-colors" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                 </button>
-                                <form action="{{ route('timecards.destroy', $tc->id) }}" method="POST" class="inline">
+                                <form id="delete-timecard-{{ $tc->id }}" action="{{ route('timecards.destroy', $tc->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-rose-400 hover:text-rose-600 transition-colors" title="Delete" onclick="return confirm('Are you sure you want to delete this entry?')">
+                                    <button type="button" 
+                                        onclick="confirmAction({
+                                            title: 'Delete Timecard',
+                                            message: 'Are you sure you want to delete this attendance record? This action is permanent.',
+                                            buttonText: 'Delete Now',
+                                            onConfirm: () => document.getElementById('delete-timecard-{{ $tc->id }}').submit()
+                                        })"
+                                        class="text-rose-400 hover:text-rose-600 transition-colors" title="Delete">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </form>
@@ -124,7 +148,7 @@
         <!-- Pagination -->
         @if($timecards->hasPages())
         <div class="px-6 py-4 bg-slate-50/30 border-t border-gray-100">
-            {{ $timecards->links('vendor.pagination.custom') }}
+            {{ $timecards->appends(['search' => request('search')])->links('vendor.pagination.custom') }}
         </div>
         @endif
     </div>
@@ -241,4 +265,7 @@
             });
         }
     </script>
+
+    @include('timecards.modals.add_timecard')
+    @include('timecards.modals.edit_timecard')
 @endsection

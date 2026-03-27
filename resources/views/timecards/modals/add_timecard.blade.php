@@ -103,7 +103,7 @@
                     const tbody = document.getElementById('timecardTableBody');
                     if (tbody) {
                         // Remove "No records" row if it exists
-                        const emptyRow = tbody.querySelector('tr td[colspan="7"]')?.closest('tr');
+                        const emptyRow = tbody.querySelector('tr td[colspan="8"]')?.closest('tr');
                         if (emptyRow) emptyRow.remove();
 
                         const tc = data.data;
@@ -125,33 +125,38 @@
                         const newRow = document.createElement('tr');
                         newRow.className = 'hover:bg-slate-50/50 transition duration-150 animate-pulse bg-indigo-50/30';
                         newRow.innerHTML = `
-                            <td class="px-6 py-4 font-medium text-gray-900">${date}</td>
                             <td class="px-6 py-4">
-                                <span class="font-medium text-indigo-700">${tc.employee.full_name}</span>
-                                <div class="text-xs text-gray-400 mt-0.5">ID: #${employeeId}</div>
+                                <input type="checkbox" name="ids[]" value="${tc.id}" class="row-checkbox w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer">
+                            </td>
+                            <td class="px-6 py-4 font-bold text-gray-900 border-l-2 border-indigo-500 pl-3 italic">
+                                ${date}
+                            </td>
+                            <td class="px-6 py-4 font-bold text-gray-900">
+                                ${tc.employee.full_name}
                             </td>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">${tc.day_type}</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${['Rest Day', 'Holiday'].includes(tc.day_type) ? 'bg-rose-50 text-rose-700 border border-rose-100' : 'bg-slate-50 text-slate-600 border border-slate-100'}">
+                                    ${tc.day_type}
+                                </span>
                             </td>
-                            <td class="px-6 py-4 text-gray-600">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-emerald-600 font-medium">${timeIn}</span>
-                                    <span class="text-gray-400">&rarr;</span>
-                                    <span class="text-rose-600 font-medium">${timeOut}</span>
+                            <td class="px-6 py-4 text-gray-600 tabular-nums">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-emerald-600 font-bold tracking-tighter">${timeIn}</span>
+                                    <span class="text-gray-300">→</span>
+                                    <span class="text-rose-500 font-bold tracking-tighter">${timeOut}</span>
                                 </div>
-                                <div class="text-xs text-gray-400 mt-0.5">Break: ${tc.break_hours} hrs</div>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <div class="font-medium text-gray-900">${Number(tc.total_hours).toFixed(2)} Regular</div>
-                                ${tc.ot_hours > 0 ? `<div class="text-xs text-amber-600 font-medium mt-0.5">+ ${Number(tc.ot_hours).toFixed(2)} OT</div>` : ''}
+                                <div class="text-gray-900 font-black italic tracking-tight">${Number(tc.total_hours).toFixed(2)} hrs</div>
+                                <div class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Total Work</div>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <div class="font-bold text-gray-900">₱ ${Number(tc.overall_total).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                                <div class="text-xs text-gray-400 mt-0.5">ND: ₱ ${Number(tc.night_diff_pay).toFixed(2)} | OT Pay: ₱ ${Number(tc.ot_pay).toFixed(2)}</div>
+                                <div class="text-emerald-600 font-black tabular-nums tracking-tighter">₱ ${Number(tc.overall_total).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                ${tc.ot_pay > 0 ? `<div class="text-[10px] text-rose-500 font-black uppercase tracking-widest">+ OT ₱ ${Number(tc.ot_pay).toFixed(2)}</div>` : ''}
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex items-center justify-center gap-3">
-                                    <button onclick="editTimecard(${tc.id})" class="text-indigo-500 hover:text-indigo-800 font-medium transition" title="Edit Timecard">
+                                    <button onclick="editTimecard(${tc.id})" class="text-indigo-500 hover:text-indigo-800 transition-colors" title="Edit">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     </button>
                                     <form id="delete-timecard-${tc.id}" action="/timecards/${tc.id}" method="POST" class="inline">
@@ -160,12 +165,12 @@
                                         <button type="button" 
                                             onclick="confirmAction({
                                                 title: 'Delete Timecard',
-                                                message: 'Delete timecard entry for ${date}? This cannot be undone.',
+                                                message: 'Delete timecard entry for ${date}? This action is permanent.',
                                                 buttonText: 'Delete Now',
                                                 onConfirm: () => document.getElementById('delete-timecard-${tc.id}').submit()
                                             })"
-                                            class="text-red-400 hover:text-red-600 font-medium transition" 
-                                            title="Delete Timecard">
+                                            class="text-rose-400 hover:text-rose-600 transition-colors" 
+                                            title="Delete">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </form>

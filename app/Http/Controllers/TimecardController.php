@@ -8,9 +8,19 @@ use App\Models\Employee;
 
 class TimecardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $timecards = Timecard::with('employee')->paginate(10);
+        $search = $request->query('search');
+
+        $timecards = Timecard::with('employee')
+            ->when($search, function($query, $search) {
+                $query->whereHas('employee', function($q) use ($search) {
+                    $q->where('id', 'like', "%{$search}%")
+                      ->orWhereRaw('LOWER(full_name) LIKE ?', ["%" . strtolower($search) . "%"]);
+                });
+            })
+            ->paginate(10);
+
         $employees = Employee::all();
         return view('timecards.index', compact('timecards', 'employees'));
     }
